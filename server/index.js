@@ -16,10 +16,7 @@ const ptyProcess = pty.spawn(bash, [], {
 ptyProcess.onData((data) => {
     io.emit('terminal:data', data);
 });
-ptyProcess.onExit((exitCode) => {
-    console.log(`Terminal exited with code ${exitCode}`);
-  });
-  
+
 const app = express();
 const server = http.createServer(app);
 const io = new SocketServer(server, {
