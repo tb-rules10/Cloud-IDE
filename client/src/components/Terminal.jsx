@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Terminal as XTerminal } from '@xterm/xterm';
-import '@xterm/xterm/css/xterm.css'
+import '../css/xterm.css'
 import socket from '../socket';
 
 const Terminal = ( ) => {
@@ -13,7 +13,7 @@ const Terminal = ( ) => {
         isRendered.current = true;
 
         const term = new XTerminal({
-            rows: 20,
+            rows: 15,
         });
 
         term.open(terminalRef.current);
