@@ -1,11 +1,16 @@
+/* eslint-disable react/prop-types */
+
 const FileTreeNode = ({ filename, nodes }) => {
+    const isDir = !!nodes;
     return (
         <div className="ml-4">
-            {filename}
+            <p className={`${isDir ? '' : 'cursor-pointer'}  `}>
+                {filename}
+            </p>
             {nodes && 
                 <ul>
                     {Object.keys(nodes).map(child => (
-                        <li key={child}>
+                        <li key={child} className="leading-relaxed">
                             <FileTreeNode filename={child} nodes={nodes[child]} />
                         </li>
                     ))}
@@ -14,7 +19,6 @@ const FileTreeNode = ({ filename, nodes }) => {
     );
 }
 
-// eslint-disable-next-line react/prop-types
 const FileTree = ({ tree }) => {
     return (
         <FileTreeNode 

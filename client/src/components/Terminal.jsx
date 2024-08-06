@@ -26,6 +26,9 @@ const Terminal = ( ) => {
             term.write(data);
         });
 
+        // return () => {
+        //     socket.off('terminal:data');
+        // };
     }, []);
 
     return (
