@@ -1,17 +1,27 @@
 /* eslint-disable react/prop-types */
 
-const FileTreeNode = ({ filename, nodes }) => {
+const FileTreeNode = ({ filename, nodes, onSelect, path }) => {
     const isDir = !!nodes;
     return (
-        <div className="ml-4">
+        <div onClick={(e) => {
+            e.stopPropagation();
+            if(isDir) return;
+            onSelect(path);
+        }} className="ml-4">
             <p className={`${isDir ? '' : 'cursor-pointer'}  `}>
-                {filename}
+            {isDir && "📂 "} 
+            {filename}
             </p>
             {nodes && 
                 <ul>
-                    {Object.keys(nodes).map(child => (
+                    {filename != "node modules" && Object.keys(nodes).map(child => (
                         <li key={child} className="leading-relaxed">
-                            <FileTreeNode filename={child} nodes={nodes[child]} />
+                            <FileTreeNode 
+                                path={path + "/" + child} 
+                                filename={child} 
+                                nodes={nodes[child]} 
+                                onSelect={onSelect}
+                            />
                         </li>
                     ))}
                 </ul>}
@@ -19,11 +29,13 @@ const FileTreeNode = ({ filename, nodes }) => {
     );
 }
 
-const FileTree = ({ tree }) => {
+const FileTree = ({ tree, onSelect }) => {
     return (
         <FileTreeNode 
             filename={"/"}
             nodes={tree}
+            path=""
+            onSelect={onSelect}
         />
     );
 }

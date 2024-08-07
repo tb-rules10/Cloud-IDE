@@ -10,7 +10,7 @@ const { Server: SocketServer } = require('socket.io');
 
 // Node-PTY
 const bash = 'C:\\Program Files\\Git\\bin\\bash.exe';
-const ptyProcess = pty.spawn(bash, [], {
+const ptyProcess = pty.spawn('powershell.exe', [], {
   name: 'xterm-color',
   cols: 80,
   rows: 30,
@@ -40,6 +40,14 @@ app.use(cors());
 
 io.on('connection', (socket) => {
   console.log('-->> Socket connected:', socket.id);
+
+  socket.on("code-update", async (content, filePath) => {
+    try {
+      const file = await fs.writeFile(path.join("./user", filePath), content);
+    } catch (error) {
+      console.error("Error reading file:", error);
+    }
+  })
   
   socket.on('terminal:write', (data) => {
     ptyProcess.write(data);
@@ -54,6 +62,12 @@ server.listen(9000, () => console.log('🐋 Server running of port 9000'))
 app.get('/files', async (req, res) => {
   const fileTree = await generateFileTree('./user');
   return res.json({ tree : fileTree })
+})
+
+app.get('/files/content', async (req, res) => {
+  const filePath = req.query.path;
+  const content = await fs.readFile(`./user${filePath}`, 'utf-8');
+  return  res.json({ content });
 })
 
 
