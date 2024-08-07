@@ -59,6 +59,13 @@ io.on('connection', (socket) => {
 server.listen(9000, () => console.log('🐋 Server running of port 9000'))
 
 // Routes
+app.get('/', (req, res) => {
+  return res.json(
+    {
+      msg: "Hi from TB!"
+    });
+})
+
 app.get('/files', async (req, res) => {
   const fileTree = await generateFileTree('./user');
   return res.json({ tree : fileTree })
