@@ -1,12 +1,12 @@
-const express = require("express");
+const express = require('express');
 
 const app = express();
 
-app.listen(5000, () => console.log("Server running on 5000"))
-
 app.get('/', (req, res) => {
-  return res.json(
-    {
-      msg: "Hi from TB!"
-    });
-})
+  res.send('Hello, World!');
+});
+
+const PORT = 3001;
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});

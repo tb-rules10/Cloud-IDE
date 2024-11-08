@@ -10,7 +10,7 @@ const { Server: SocketServer } = require('socket.io');
 
 // Node-PTY
 const bash = 'C:\\Program Files\\Git\\bin\\bash.exe';
-const ptyProcess = pty.spawn('powershell.exe', [], {
+const ptyProcess = pty.spawn(bash , [], {
   name: 'xterm-color',
   cols: 80,
   rows: 30,
@@ -77,20 +77,25 @@ app.get('/files/content', async (req, res) => {
   return  res.json({ content });
 })
 
-
-async function generateFileTree(directory){
+async function generateFileTree(directory) {
   const tree = {};
 
-  async function buildTree(currDir, currTree){
+  async function buildTree(currDir, currTree) {
     const files = await fs.readdir(currDir);
 
-    for (const file of files){
+    for (const file of files) {
       const filePath = path.join(currDir, file);
+
       const stat = await fs.stat(filePath);
 
-      if (stat.isDirectory()){
-        currTree[file] = {};
-        await buildTree(filePath, currTree[file]);
+      if (stat.isDirectory()) {
+        // Add node_modules as a single entry without expanding
+        if (file === 'node_modules') {
+          currTree[file] = null; // Mark as a folder without expanding
+        } else {
+          currTree[file] = {};
+          await buildTree(filePath, currTree[file]);
+        }
       } else {
         currTree[file] = null;
       }
