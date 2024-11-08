@@ -14,7 +14,7 @@ function App() {
   const isSaved = selectedFileContent === code;
 
   const getFileTree = async () => {
-    const response = await fetch("http://localhost:9000/files");
+    const response = await fetch("http://localhost:5000/files");
     const res = await response.json();
     setFileTree(res.tree);
   };

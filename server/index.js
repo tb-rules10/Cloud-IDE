@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
   // socket.on('disconnect', (data) => console.log('-->> Disconnected:', socket.id));
 })
 
-server.listen(9000, () => console.log('🐋 Server running of port 9000'))
+server.listen(5000, () => console.log('🐋 Server running of port 5000'))
 
 // Routes
 app.get('/', (req, res) => {
